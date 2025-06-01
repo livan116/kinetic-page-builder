@@ -21,6 +21,7 @@ import ContactUs from "./pages/ContactUs";
 import FAQs from "./pages/FAQs";
 import Testimonials from "./pages/Testimonials";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import PricingPage from "./pages/PricingPage";
 import ProductDetail from "./pages/ProductDetail";
 import OrderConfirmation from "./pages/OrderConfirmation";
