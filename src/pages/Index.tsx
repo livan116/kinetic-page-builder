@@ -1,15 +1,14 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Calendar } from "@/components/ui/calendar";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Calendar as CalendarIcon, Clock, User } from "lucide-react";
+import BookingWidget from "@/components/BookingWidget";
+import Autoplay from "embla-carousel-autoplay";
 
 const Index = () => {
-  const [isVisible, setIsVisible] = useState({});
-  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -33,114 +32,129 @@ const Index = () => {
   }, []);
 
   const services = [
-    { title: "Service 1", description: "Placeholder description for your first service offering", price: "$99" },
-    { title: "Service 2", description: "Placeholder description for your second service offering", price: "$149" },
-    { title: "Service 3", description: "Placeholder description for your third service offering", price: "$199" },
-    { title: "Service 4", description: "Placeholder description for your fourth service offering", price: "$249" },
+    { title: "Premium Consulting", description: "Expert business consulting services to accelerate your growth", price: "$299", image: "Service Image 1" },
+    { title: "Digital Strategy", description: "Comprehensive digital transformation strategies", price: "$449", image: "Service Image 2" },
+    { title: "Brand Development", description: "Complete brand identity and positioning services", price: "$599", image: "Service Image 3" },
+    { title: "Marketing Automation", description: "Advanced marketing automation and analytics", price: "$349", image: "Service Image 4" },
   ];
 
   const testimonials = [
-    { name: "Sarah Johnson", role: "Business Owner", rating: 5, text: "Amazing service! Highly recommend to everyone." },
-    { name: "Michael Chen", role: "Entrepreneur", rating: 5, text: "Professional and reliable. Exceeded my expectations." },
-    { name: "Emily Davis", role: "Freelancer", rating: 5, text: "Outstanding quality and customer service." },
-    { name: "David Wilson", role: "Startup Founder", rating: 5, text: "Best decision I made for my business." },
+    { name: "Sarah Johnson", role: "CEO, TechStart", rating: 5, text: "Absolutely transformed our business operations. The results exceeded all expectations!", image: "Customer Image 1" },
+    { name: "Michael Chen", role: "Founder, InnovateCorp", rating: 5, text: "Professional, reliable, and incredibly effective. Highly recommend to any business owner.", image: "Customer Image 2" },
+    { name: "Emily Davis", role: "Director, GrowthLabs", rating: 5, text: "Outstanding service quality and customer support. They truly care about your success.", image: "Customer Image 3" },
+    { name: "David Wilson", role: "Manager, ScaleUp", rating: 5, text: "Best investment we made for our company. The ROI was immediate and substantial.", image: "Customer Image 4" },
   ];
 
   const blogPosts = [
-    { id: 1, title: "Blog Post Title 1", excerpt: "This is a brief excerpt of the first blog post...", date: "2024-01-15", category: "Business" },
-    { id: 2, title: "Blog Post Title 2", excerpt: "This is a brief excerpt of the second blog post...", date: "2024-01-10", category: "Technology" },
-    { id: 3, title: "Blog Post Title 3", excerpt: "This is a brief excerpt of the third blog post...", date: "2024-01-05", category: "Marketing" },
-    { id: 4, title: "Blog Post Title 4", excerpt: "This is a brief excerpt of the fourth blog post...", date: "2024-01-01", category: "Design" },
+    { id: 1, title: "10 Strategies to Scale Your Business in 2024", excerpt: "Discover proven methods to accelerate growth and expand your market reach...", date: "2024-01-15", category: "Business Growth", readTime: "5 min read" },
+    { id: 2, title: "The Future of Digital Transformation", excerpt: "How emerging technologies are reshaping industries and creating new opportunities...", date: "2024-01-10", category: "Technology", readTime: "7 min read" },
+    { id: 3, title: "Building a Customer-Centric Brand", excerpt: "Learn how to create authentic connections with your audience and build loyalty...", date: "2024-01-05", category: "Branding", readTime: "6 min read" },
+    { id: 4, title: "Data-Driven Marketing Success", excerpt: "Leverage analytics and insights to optimize your marketing performance...", date: "2024-01-01", category: "Marketing", readTime: "8 min read" },
   ];
 
   const pricingPlans = [
-    { name: "Basic", price: "$29", features: ["Feature 1", "Feature 2", "Feature 3"] },
-    { name: "Pro", price: "$59", features: ["All Basic features", "Advanced Feature 1", "Advanced Feature 2"] },
-    { name: "Enterprise", price: "$99", features: ["All Pro features", "Premium Feature 1", "Premium Feature 2"] },
-  ];
-
-  const timeSlots = [
-    "9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"
+    { name: "Starter", price: "$99", period: "month", features: ["5 Projects", "Basic Support", "Standard Templates", "Email Integration"], popular: false },
+    { name: "Professional", price: "$199", period: "month", features: ["Unlimited Projects", "Priority Support", "Premium Templates", "Advanced Analytics"], popular: true },
+    { name: "Enterprise", price: "$399", period: "month", features: ["Custom Solutions", "24/7 Support", "White-label Options", "Dedicated Manager"], popular: false },
   ];
 
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary to-primary/80 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <div className="text-center animate-fade-in">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-scale-in">
-              Welcome to <span className="text-yellow-300">YourBrand</span>
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 animate-scale-in bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+              Transform Your <span className="text-yellow-300">Vision</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-              Your tagline goes here. This is a placeholder for your main value proposition and brand message.
+            <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto opacity-90 leading-relaxed">
+              Unlock your business potential with our cutting-edge solutions, expert guidance, and innovative strategies that drive real results.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
               <Button 
                 size="lg" 
                 variant="secondary" 
-                className="text-lg px-8 py-3 hover:scale-105 transition-transform duration-300"
+                className="text-lg px-10 py-4 hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-yellow-300/25 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold"
                 asChild
               >
-                <Link to="/products">Explore Products</Link>
+                <Link to="/products">Start Your Journey</Link>
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="text-lg px-8 py-3 text-white border-white hover:bg-white hover:text-primary hover:scale-105 transition-all duration-300"
+                className="text-lg px-10 py-4 text-white border-2 border-white/50 hover:bg-white/20 hover:border-white hover:scale-110 transition-all duration-300 backdrop-blur-sm"
                 asChild
               >
-                <Link to="/services">Our Services</Link>
+                <Link to="/services">Explore Services</Link>
               </Button>
+            </div>
+            
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+              {[
+                { number: "500+", label: "Happy Clients" },
+                { number: "98%", label: "Success Rate" },
+                { number: "24/7", label: "Support" },
+                { number: "50+", label: "Countries" }
+              ].map((stat, index) => (
+                <div key={index} className="text-center animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{stat.number}</div>
+                  <div className="text-white/80">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" data-animate className={`py-20 bg-white transition-all duration-1000 ${isVisible.about ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="about" data-animate className={`py-24 bg-white transition-all duration-1000 ${isVisible.about ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">About Our Company</h2>
-              <p className="text-xl text-gray-600 mb-6">
-                Placeholder text about your company's mission, vision, and values. Replace this with compelling content about what makes your business unique and why customers should choose you.
+              <h2 className="text-5xl font-bold text-gray-900 mb-8 leading-tight">Pioneering Excellence in <span className="text-primary">Innovation</span></h2>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                With over a decade of experience, we've transformed thousands of businesses through cutting-edge solutions, strategic insights, and unwavering commitment to excellence.
               </p>
-              <p className="text-lg text-gray-600 mb-8">
-                Additional paragraph about your company's history, achievements, or unique selling propositions. This helps build trust and credibility with your audience.
+              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+                Our team of world-class experts brings together diverse perspectives and deep industry knowledge to deliver results that exceed expectations and drive sustainable growth.
               </p>
-              <Button asChild className="hover:scale-105 transition-transform duration-300">
-                <Link to="/about">Learn More</Link>
+              <Button size="lg" asChild className="hover:scale-105 transition-transform duration-300 shadow-lg">
+                <Link to="/about">Discover Our Story</Link>
               </Button>
             </div>
             <div className="relative">
-              <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-lg">About Us Image Placeholder</span>
+              <div className="w-full h-[500px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-500">
+                <span className="text-gray-500 text-xl">About Us Visual</span>
               </div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-primary rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-6 -left-6 w-16 h-16 bg-yellow-400 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section id="mission" data-animate className={`py-20 bg-gray-50 transition-all duration-1000 ${isVisible.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="mission" data-animate className={`py-24 bg-gradient-to-br from-gray-50 to-gray-100 transition-all duration-1000 ${isVisible.mission ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative order-2 lg:order-1">
-              <div className="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-                <span className="text-gray-500 text-lg">Mission Image Placeholder</span>
+              <div className="w-full h-[500px] bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl shadow-2xl flex items-center justify-center hover:scale-105 transition-transform duration-500">
+                <span className="text-primary text-xl font-medium">Mission Visual</span>
               </div>
+              <div className="absolute -top-8 -left-8 w-20 h-20 bg-yellow-400 rounded-full animate-bounce"></div>
             </div>
             <div className="order-1 lg:order-2">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Mission & Vision</h2>
-              <p className="text-xl text-gray-600 mb-6">
-                Placeholder text describing your company's mission and long-term vision. This section should inspire confidence and show your commitment to your customers and industry.
+              <h2 className="text-5xl font-bold text-gray-900 mb-8 leading-tight">Empowering Your <span className="text-primary">Future</span></h2>
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Our mission is to democratize success by providing world-class tools, strategies, and support that enable every business to reach its full potential in the digital age.
               </p>
-              <p className="text-lg text-gray-600 mb-8">
-                Additional content about your core values, commitment to quality, and how you plan to make a positive impact in your industry or community.
+              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+                We believe in the power of innovation, the strength of collaboration, and the importance of sustainable growth that benefits not just businesses, but entire communities.
               </p>
-              <Button variant="outline" asChild className="hover:scale-105 transition-transform duration-300">
-                <Link to="/about">Our Story</Link>
+              <Button variant="outline" size="lg" asChild className="hover:scale-105 transition-transform duration-300 shadow-lg">
+                <Link to="/about">Our Vision</Link>
               </Button>
             </div>
           </div>
@@ -148,329 +162,315 @@ const Index = () => {
       </section>
 
       {/* Services Carousel */}
-      <section id="services" data-animate className={`py-20 bg-white transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="services" data-animate className={`py-24 bg-white transition-all duration-1000 ${isVisible.services ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover our range of professional services designed to meet your needs.
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Premium Services</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Comprehensive solutions designed to accelerate your growth and maximize your potential.
             </p>
           </div>
           
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
+          <Carousel 
+            className="w-full"
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent className="ml-4">
               {services.map((service, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <CardHeader>
-                      <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                        <span className="text-gray-500">Service Image</span>
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg">
+                    <CardHeader className="pb-4">
+                      <div className="w-full h-56 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl mb-6 flex items-center justify-center">
+                        <span className="text-primary font-medium">{service.image}</span>
                       </div>
-                      <CardTitle>{service.title}</CardTitle>
-                      <CardDescription>{service.description}</CardDescription>
+                      <CardTitle className="text-2xl">{service.title}</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">{service.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold text-primary">{service.price}</span>
-                        <Button size="sm">Learn More</Button>
+                        <span className="text-3xl font-bold text-primary">{service.price}</span>
+                        <Button size="lg" className="hover:scale-110 transition-transform duration-300">Learn More</Button>
                       </div>
                     </CardContent>
                   </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
           </Carousel>
         </div>
       </section>
 
       {/* Booking Section */}
-      <section id="booking" data-animate className={`py-20 bg-gradient-to-br from-primary/10 to-primary/5 transition-all duration-1000 ${isVisible.booking ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="booking" data-animate className={`py-24 bg-gradient-to-br from-primary/5 to-primary/10 transition-all duration-1000 ${isVisible.booking ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Book Your Appointment</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Schedule a consultation or service appointment with our expert team. Choose your preferred date and time.
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Schedule Your Success</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Book a personalized consultation with our experts and take the first step towards transforming your business.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Calendar Section */}
-            <Card className="hover:shadow-xl transition-all duration-500 hover:scale-105">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CalendarIcon className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle className="text-2xl">Select Date</CardTitle>
-                <CardDescription>Choose your preferred appointment date</CardDescription>
-              </CardHeader>
-              <CardContent className="flex justify-center">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  className="rounded-md border shadow-sm"
-                  disabled={(date) => date < new Date()}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Time Slots Section */}
-            <Card className="hover:shadow-xl transition-all duration-500 hover:scale-105">
-              <CardHeader className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-8 h-8 text-primary" />
-                </div>
-                <CardTitle className="text-2xl">Select Time</CardTitle>
-                <CardDescription>Available time slots for your appointment</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-3">
-                  {timeSlots.map((time, index) => (
-                    <Button 
-                      key={time} 
-                      variant="outline" 
-                      className="hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
-                      style={{ animationDelay: `${index * 0.05}s` }}
-                    >
-                      {time}
-                    </Button>
-                  ))}
-                </div>
-                
-                {selectedDate && (
-                  <div className="mt-6 p-4 bg-primary/10 rounded-lg animate-fade-in">
-                    <h3 className="font-semibold text-primary mb-2 flex items-center">
-                      <User className="w-4 h-4 mr-2" />
-                      Booking Summary
-                    </h3>
-                    <p className="text-gray-700 text-sm">Selected date: {selectedDate.toDateString()}</p>
-                    <p className="text-gray-700 text-sm">Service: Consultation</p>
-                    <p className="text-gray-700 text-sm">Duration: 60 minutes</p>
-                    <p className="text-gray-700 text-sm">Price: $150</p>
-                  </div>
-                )}
-                
-                <Button 
-                  className="w-full mt-6 hover:scale-105 transition-transform duration-300" 
-                  size="lg"
-                  asChild
-                >
-                  <Link to="/booking">Complete Booking</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="text-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-green-500 rounded-full"></div>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Easy Scheduling</h3>
-              <p className="text-gray-600 text-sm">Book appointments in just a few clicks</p>
-            </div>
-            <div className="text-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Instant Confirmation</h3>
-              <p className="text-gray-600 text-sm">Receive immediate booking confirmation</p>
-            </div>
-            <div className="text-center animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-purple-500 rounded-full"></div>
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Flexible Rescheduling</h3>
-              <p className="text-gray-600 text-sm">Easy to reschedule or cancel if needed</p>
-            </div>
-          </div>
+          <BookingWidget />
         </div>
       </section>
 
       {/* Testimonials Carousel */}
-      <section id="testimonials" data-animate className={`py-20 bg-gray-50 transition-all duration-1000 ${isVisible.testimonials ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="testimonials" data-animate className={`py-24 bg-gray-50 transition-all duration-1000 ${isVisible.testimonials ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Don't just take our word for it. Here's what our satisfied customers have to say.
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Success Stories</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Hear from the industry leaders who have transformed their businesses with our solutions.
             </p>
           </div>
           
-          <Carousel className="w-full max-w-4xl mx-auto">
-            <CarouselContent>
+          <Carousel 
+            className="w-full"
+            plugins={[
+              Autoplay({
+                delay: 4000,
+              }),
+            ]}
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent className="ml-4">
               {testimonials.map((testimonial, index) => (
-                <CarouselItem key={index} className="md:basis-1/2">
-                  <Card className="hover:shadow-lg transition-all duration-300">
-                    <CardHeader>
-                      <div className="flex items-center space-x-4 mb-4">
-                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                          <span className="text-gray-500 text-sm">IMG</span>
+                <CarouselItem key={index} className="pl-4 md:basis-1/2">
+                  <Card className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg h-full">
+                    <CardHeader className="pb-6">
+                      <div className="flex items-center space-x-6 mb-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/30 rounded-full flex items-center justify-center">
+                          <span className="text-primary text-sm font-medium">IMG</span>
                         </div>
                         <div>
-                          <CardTitle className="text-lg">{testimonial.name}</CardTitle>
-                          <CardDescription>{testimonial.role}</CardDescription>
+                          <CardTitle className="text-xl">{testimonial.name}</CardTitle>
+                          <CardDescription className="text-base">{testimonial.role}</CardDescription>
                         </div>
                       </div>
                       <div className="flex space-x-1 mb-4">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                          <span key={i} className="text-yellow-400 text-lg">★</span>
+                          <span key={i} className="text-yellow-400 text-xl">★</span>
                         ))}
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 italic">"{testimonial.text}"</p>
+                      <p className="text-gray-600 italic text-lg leading-relaxed">"{testimonial.text}"</p>
                     </CardContent>
                   </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
           </Carousel>
         </div>
       </section>
 
       {/* Pricing Carousel */}
-      <section id="pricing" data-animate className={`py-20 bg-white transition-all duration-1000 ${isVisible.pricing ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="pricing" data-animate className={`py-24 bg-white transition-all duration-1000 ${isVisible.pricing ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple Pricing</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the plan that's right for you. No hidden fees, no surprises.
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Flexible Pricing Plans</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Choose the perfect plan that scales with your business growth and ambitions.
             </p>
           </div>
           
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
+          <Carousel 
+            className="w-full"
+            plugins={[
+              Autoplay({
+                delay: 5000,
+              }),
+            ]}
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent className="ml-4">
               {pricingPlans.map((plan, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <CardHeader className="text-center">
-                      <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                      <div className="mt-4">
-                        <span className="text-4xl font-bold text-primary">{plan.price}</span>
-                        <span className="text-gray-600">/month</span>
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className={`hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg relative ${
+                    plan.popular ? 'ring-2 ring-primary bg-gradient-to-br from-primary/5 to-primary/10' : ''
+                  }`}>
+                    {plan.popular && (
+                      <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span className="bg-primary text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
+                          Most Popular
+                        </span>
+                      </div>
+                    )}
+                    <CardHeader className="text-center pt-10 pb-6">
+                      <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
+                      <div className="mb-6">
+                        <span className="text-5xl font-bold text-primary">{plan.price}</span>
+                        <span className="text-gray-600 ml-2">/{plan.period}</span>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-3 mb-6">
+                      <ul className="space-y-4 mb-8">
                         {plan.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                            <div className="w-2 h-2 bg-green-500 rounded-full mr-4"></div>
                             <span className="text-gray-600">{feature}</span>
                           </li>
                         ))}
                       </ul>
-                      <Button className="w-full">Choose Plan</Button>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
-        </div>
-      </section>
-
-      {/* Blog Carousel */}
-      <section id="blog" data-animate className={`py-20 bg-gray-50 transition-all duration-1000 ${isVisible.blog ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Latest from Our Blog</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stay updated with the latest insights, tips, and industry news.
-            </p>
-          </div>
-          
-          <Carousel className="w-full max-w-5xl mx-auto">
-            <CarouselContent>
-              {blogPosts.map((post, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <CardHeader>
-                      <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                        <span className="text-gray-500">Blog Image</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500 mb-2">
-                        <span className="bg-primary/10 text-primary px-2 py-1 rounded text-xs mr-2">
-                          {post.category}
-                        </span>
-                        <span>{post.date}</span>
-                      </div>
-                      <CardTitle className="text-xl">{post.title}</CardTitle>
-                      <CardDescription>{post.excerpt}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to={`/blog/${post.id}`}>Read More</Link>
+                      <Button 
+                        className={`w-full hover:scale-105 transition-transform duration-300 ${
+                          plan.popular ? 'bg-primary shadow-lg' : ''
+                        }`}
+                        variant={plan.popular ? "default" : "outline"}
+                        size="lg"
+                      >
+                        Get Started
                       </Button>
                     </CardContent>
                   </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+          </Carousel>
+        </div>
+      </section>
+
+      {/* Blog Carousel */}
+      <section id="blog" data-animate className={`py-24 bg-gray-50 transition-all duration-1000 ${isVisible.blog ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Latest Insights</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Stay ahead with expert insights, industry trends, and actionable strategies.
+            </p>
+          </div>
+          
+          <Carousel 
+            className="w-full"
+            plugins={[
+              Autoplay({
+                delay: 4500,
+              }),
+            ]}
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent className="ml-4">
+              {blogPosts.map((post, index) => (
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <Card className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg h-full">
+                    <CardHeader className="pb-4">
+                      <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-6 flex items-center justify-center">
+                        <span className="text-gray-500">Blog Image</span>
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500 mb-4">
+                        <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs mr-3">
+                          {post.category}
+                        </span>
+                        <span>{post.readTime}</span>
+                      </div>
+                      <CardTitle className="text-xl leading-tight">{post.title}</CardTitle>
+                      <CardDescription className="text-base leading-relaxed">{post.excerpt}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-500">{post.date}</span>
+                        <Button variant="outline" size="sm" asChild className="hover:scale-110 transition-transform duration-300">
+                          <Link to={`/blog/${post.id}`}>Read More</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
           </Carousel>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" data-animate className={`py-20 bg-primary text-white transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <section id="contact" data-animate className={`py-24 bg-gradient-to-br from-primary to-primary/90 text-white transition-all duration-1000 ${isVisible.contact ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Get in Touch</h2>
-              <p className="text-xl mb-8 opacity-90">
-                Ready to get started? Contact us today and let's discuss how we can help you achieve your goals.
+              <h2 className="text-5xl font-bold mb-8">Ready to Get Started?</h2>
+              <p className="text-xl mb-10 opacity-90 leading-relaxed">
+                Let's discuss how we can transform your business with our proven strategies and cutting-edge solutions.
               </p>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex items-center">
-                  <div className="w-6 h-6 bg-white/20 rounded mr-4"></div>
-                  <span>+1 (555) 123-4567</span>
+                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-6">
+                    <span className="text-white text-lg">📞</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Call Us</div>
+                    <span className="opacity-90">+1 (555) 123-4567</span>
+                  </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-6 h-6 bg-white/20 rounded mr-4"></div>
-                  <span>hello@yourbrand.com</span>
+                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-6">
+                    <span className="text-white text-lg">✉️</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Email Us</div>
+                    <span className="opacity-90">hello@yourbrand.com</span>
+                  </div>
                 </div>
                 <div className="flex items-center">
-                  <div className="w-6 h-6 bg-white/20 rounded mr-4"></div>
-                  <span>123 Business Street, City, State 12345</span>
+                  <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-6">
+                    <span className="text-white text-lg">📍</span>
+                  </div>
+                  <div>
+                    <div className="font-semibold">Visit Us</div>
+                    <span className="opacity-90">123 Business Street, City, State 12345</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-10 shadow-2xl">
               <form className="space-y-6">
-                <div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input 
                     type="text" 
-                    placeholder="Your Name" 
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+                    placeholder="First Name" 
+                    className="w-full px-6 py-4 rounded-xl bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
                   />
-                </div>
-                <div>
                   <input 
-                    type="email" 
-                    placeholder="Your Email" 
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+                    type="text" 
+                    placeholder="Last Name" 
+                    className="w-full px-6 py-4 rounded-xl bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
                   />
                 </div>
-                <div>
-                  <textarea 
-                    placeholder="Your Message" 
-                    rows={4}
-                    className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50 resize-none"
-                  ></textarea>
-                </div>
+                <input 
+                  type="email" 
+                  placeholder="Email Address" 
+                  className="w-full px-6 py-4 rounded-xl bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300"
+                />
+                <textarea 
+                  placeholder="Tell us about your project..." 
+                  rows={4}
+                  className="w-full px-6 py-4 rounded-xl bg-white/20 border border-white/30 placeholder-white/70 text-white focus:outline-none focus:ring-2 focus:ring-white/50 resize-none transition-all duration-300"
+                ></textarea>
                 <Button 
                   type="submit" 
                   variant="secondary" 
-                  className="w-full hover:scale-105 transition-transform duration-300"
+                  size="lg"
+                  className="w-full hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold py-4 text-lg"
                 >
                   Send Message
                 </Button>
@@ -481,19 +481,29 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-white">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in">
-          <h2 className="text-4xl font-bold mb-6 text-gray-900">Ready to Get Started?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto text-gray-600">
-            Join thousands of satisfied customers who have transformed their business with our solutions.
+          <h2 className="text-5xl font-bold mb-8 text-gray-900">Transform Your Business Today</h2>
+          <p className="text-xl mb-12 max-w-3xl mx-auto text-gray-600 leading-relaxed">
+            Join thousands of successful businesses who have accelerated their growth with our proven solutions and expert guidance.
           </p>
-          <Button 
-            size="lg" 
-            className="text-lg px-8 py-3 hover:scale-105 transition-transform duration-300"
-            asChild
-          >
-            <Link to="/booking">Book Now</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button 
+              size="lg" 
+              className="text-lg px-10 py-4 hover:scale-105 transition-transform duration-300 shadow-lg bg-gradient-to-r from-primary to-primary/80"
+              asChild
+            >
+              <Link to="/booking">Book Free Consultation</Link>
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="text-lg px-10 py-4 hover:scale-105 transition-transform duration-300 shadow-lg"
+              asChild
+            >
+              <Link to="/pricing">View Pricing</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </Layout>
