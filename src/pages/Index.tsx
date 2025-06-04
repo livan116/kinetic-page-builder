@@ -1,13 +1,15 @@
-
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Calendar } from "@/components/ui/calendar";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Calendar as CalendarIcon, Clock, User } from "lucide-react";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState({});
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,6 +57,10 @@ const Index = () => {
     { name: "Basic", price: "$29", features: ["Feature 1", "Feature 2", "Feature 3"] },
     { name: "Pro", price: "$59", features: ["All Basic features", "Advanced Feature 1", "Advanced Feature 2"] },
     { name: "Enterprise", price: "$99", features: ["All Pro features", "Premium Feature 1", "Premium Feature 2"] },
+  ];
+
+  const timeSlots = [
+    "9:00 AM", "10:00 AM", "11:00 AM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"
   ];
 
   return (
@@ -176,6 +182,111 @@ const Index = () => {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
+        </div>
+      </section>
+
+      {/* Booking Section */}
+      <section id="booking" data-animate className={`py-20 bg-gradient-to-br from-primary/10 to-primary/5 transition-all duration-1000 ${isVisible.booking ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Book Your Appointment</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Schedule a consultation or service appointment with our expert team. Choose your preferred date and time.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* Calendar Section */}
+            <Card className="hover:shadow-xl transition-all duration-500 hover:scale-105">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CalendarIcon className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle className="text-2xl">Select Date</CardTitle>
+                <CardDescription>Choose your preferred appointment date</CardDescription>
+              </CardHeader>
+              <CardContent className="flex justify-center">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  className="rounded-md border shadow-sm"
+                  disabled={(date) => date < new Date()}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Time Slots Section */}
+            <Card className="hover:shadow-xl transition-all duration-500 hover:scale-105">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-8 h-8 text-primary" />
+                </div>
+                <CardTitle className="text-2xl">Select Time</CardTitle>
+                <CardDescription>Available time slots for your appointment</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-3">
+                  {timeSlots.map((time, index) => (
+                    <Button 
+                      key={time} 
+                      variant="outline" 
+                      className="hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                    >
+                      {time}
+                    </Button>
+                  ))}
+                </div>
+                
+                {selectedDate && (
+                  <div className="mt-6 p-4 bg-primary/10 rounded-lg animate-fade-in">
+                    <h3 className="font-semibold text-primary mb-2 flex items-center">
+                      <User className="w-4 h-4 mr-2" />
+                      Booking Summary
+                    </h3>
+                    <p className="text-gray-700 text-sm">Selected date: {selectedDate.toDateString()}</p>
+                    <p className="text-gray-700 text-sm">Service: Consultation</p>
+                    <p className="text-gray-700 text-sm">Duration: 60 minutes</p>
+                    <p className="text-gray-700 text-sm">Price: $150</p>
+                  </div>
+                )}
+                
+                <Button 
+                  className="w-full mt-6 hover:scale-105 transition-transform duration-300" 
+                  size="lg"
+                  asChild
+                >
+                  <Link to="/booking">Complete Booking</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+            <div className="text-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-green-500 rounded-full"></div>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Easy Scheduling</h3>
+              <p className="text-gray-600 text-sm">Book appointments in just a few clicks</p>
+            </div>
+            <div className="text-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-blue-500 rounded-full"></div>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Instant Confirmation</h3>
+              <p className="text-gray-600 text-sm">Receive immediate booking confirmation</p>
+            </div>
+            <div className="text-center animate-fade-in" style={{ animationDelay: "0.4s" }}>
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-purple-500 rounded-full"></div>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">Flexible Rescheduling</h3>
+              <p className="text-gray-600 text-sm">Easy to reschedule or cancel if needed</p>
+            </div>
+          </div>
         </div>
       </section>
 
