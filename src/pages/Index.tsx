@@ -9,6 +9,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
+  const [counters, setCounters] = useState({ clients: 0, successRate: 0, support: 0, countries: 0 });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -19,6 +20,11 @@ const Index = () => {
               ...prev,
               [entry.target.id]: true
             }));
+            
+            // Start counter animation when hero section is visible
+            if (entry.target.id === 'hero-stats') {
+              animateCounters();
+            }
           }
         });
       },
@@ -30,6 +36,31 @@ const Index = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  const animateCounters = () => {
+    const targets = { clients: 500, successRate: 98, support: 24, countries: 50 };
+    const duration = 2000; // 2 seconds
+    const steps = 60; // 60 FPS
+    const increment = duration / steps;
+
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      
+      setCounters({
+        clients: Math.floor(targets.clients * progress),
+        successRate: Math.floor(targets.successRate * progress),
+        support: Math.floor(targets.support * progress),
+        countries: Math.floor(targets.countries * progress)
+      });
+
+      if (step >= steps) {
+        clearInterval(timer);
+        setCounters(targets);
+      }
+    }, increment);
+  };
 
   const services = [
     { title: "Premium Consulting", description: "Expert business consulting services to accelerate your growth", price: "$299", image: "Service Image 1" },
@@ -91,18 +122,23 @@ const Index = () => {
             </div>
             
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              {[
-                { number: "500+", label: "Happy Clients" },
-                { number: "98%", label: "Success Rate" },
-                { number: "24/7", label: "Support" },
-                { number: "50+", label: "Countries" }
-              ].map((stat, index) => (
-                <div key={index} className="text-center animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{stat.number}</div>
-                  <div className="text-white/80">{stat.label}</div>
-                </div>
-              ))}
+            <div id="hero-stats" data-animate className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+              <div className="text-center animate-fade-in">
+                <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{counters.clients}+</div>
+                <div className="text-white/80">Happy Clients</div>
+              </div>
+              <div className="text-center animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{counters.successRate}%</div>
+                <div className="text-white/80">Success Rate</div>
+              </div>
+              <div className="text-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{counters.support}/7</div>
+                <div className="text-white/80">Support</div>
+              </div>
+              <div className="text-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
+                <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">{counters.countries}+</div>
+                <div className="text-white/80">Countries</div>
+              </div>
             </div>
           </div>
         </div>
@@ -303,7 +339,7 @@ const Index = () => {
             <CarouselContent className="ml-4">
               {pricingPlans.map((plan, index) => (
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Card className={`hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg relative ${
+                  <Card className={`hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg relative py-8 ${
                     plan.popular ? 'ring-2 ring-primary bg-gradient-to-br from-primary/5 to-primary/10' : ''
                   }`}>
                     {plan.popular && (
@@ -320,7 +356,7 @@ const Index = () => {
                         <span className="text-gray-600 ml-2">/{plan.period}</span>
                       </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="px-8 pb-8">
                       <ul className="space-y-4 mb-8">
                         {plan.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center">

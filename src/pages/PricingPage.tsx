@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -134,7 +133,7 @@ const PricingPage = () => {
             {packages.map((pkg, index) => (
               <Card 
                 key={pkg.id} 
-                className={`relative hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-xl animate-fade-in ${
+                className={`relative hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-xl animate-fade-in py-8 ${
                   pkg.popular ? 'ring-4 ring-primary/50 transform scale-110 lg:scale-110' : ''
                 } ${selectedPlan === pkg.id ? 'ring-2 ring-primary' : ''}`}
                 style={{ animationDelay: `${index * 0.1}s` }}

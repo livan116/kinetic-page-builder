@@ -2,237 +2,294 @@
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Search, Filter, Star, Heart, ShoppingCart } from "lucide-react";
 
 const ProductPage = () => {
-  const [priceRange, setPriceRange] = useState([0, 500]);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [priceRange, setPriceRange] = useState("all");
+  const [sortBy, setSortBy] = useState("name");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(prev => ({
+              ...prev,
+              [entry.target.id]: true
+            }));
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = document.querySelectorAll('[data-animate]');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
 
   const products = [
-    { id: 1, name: "Premium Product 1", price: "$299", originalPrice: "$399", description: "High-quality product with advanced features and excellent durability", category: "Electronics", rating: 4.8, reviews: 124 },
-    { id: 2, name: "Professional Product 2", price: "$199", originalPrice: "$249", description: "Professional-grade product designed for optimal performance", category: "Tools", rating: 4.6, reviews: 89 },
-    { id: 3, name: "Deluxe Product 3", price: "$399", originalPrice: "$499", description: "Deluxe edition with premium materials and enhanced functionality", category: "Electronics", rating: 4.9, reviews: 203 },
-    { id: 4, name: "Standard Product 4", price: "$149", originalPrice: "$199", description: "Reliable standard product perfect for everyday use", category: "Home", rating: 4.5, reviews: 67 },
-    { id: 5, name: "Pro Product 5", price: "$349", originalPrice: "$429", description: "Professional product with cutting-edge technology", category: "Tools", rating: 4.7, reviews: 156 },
-    { id: 6, name: "Elite Product 6", price: "$499", originalPrice: "$599", description: "Elite-level product with premium features and materials", category: "Electronics", rating: 4.9, reviews: 278 },
+    { id: 1, name: "Premium Business Suite", category: "software", price: 299, rating: 4.8, image: "Product Image 1", description: "Complete business management solution with advanced analytics and reporting capabilities.", popular: true },
+    { id: 2, name: "Digital Marketing Toolkit", category: "marketing", price: 199, rating: 4.6, image: "Product Image 2", description: "Comprehensive set of digital marketing tools and automation features.", popular: false },
+    { id: 3, name: "Enterprise Security Package", category: "security", price: 499, rating: 4.9, image: "Product Image 3", description: "Advanced security solutions for enterprise-level protection and compliance.", popular: true },
+    { id: 4, name: "Cloud Storage Pro", category: "storage", price: 99, rating: 4.5, image: "Product Image 4", description: "Scalable cloud storage solution with real-time sync and collaboration features.", popular: false },
+    { id: 5, name: "Analytics Dashboard Plus", category: "analytics", price: 149, rating: 4.7, image: "Product Image 5", description: "Advanced analytics and visualization tools for data-driven decision making.", popular: false },
+    { id: 6, name: "Communication Hub", category: "communication", price: 79, rating: 4.4, image: "Product Image 6", description: "Unified communication platform for seamless team collaboration.", popular: false },
+    { id: 7, name: "Project Management Elite", category: "software", price: 249, rating: 4.8, image: "Product Image 7", description: "Professional project management with advanced scheduling and resource allocation.", popular: true },
+    { id: 8, name: "Financial Planning Suite", category: "finance", price: 399, rating: 4.9, image: "Product Image 8", description: "Comprehensive financial planning and forecasting tools for businesses.", popular: false },
   ];
 
-  const categories = ["All", "Electronics", "Tools", "Home"];
+  const relatedProducts = [
+    { id: 9, name: "Startup Accelerator Pack", category: "bundle", price: 199, rating: 4.6, image: "Related Product 1", description: "Essential tools and resources for startup businesses." },
+    { id: 10, name: "Small Business Essentials", category: "bundle", price: 149, rating: 4.5, image: "Related Product 2", description: "Complete package for small business operations." },
+    { id: 11, name: "Enterprise Growth Kit", category: "bundle", price: 599, rating: 4.8, image: "Related Product 3", description: "Advanced solutions for scaling enterprise operations." },
+    { id: 12, name: "Digital Transformation Bundle", category: "bundle", price: 799, rating: 4.9, image: "Related Product 4", description: "Complete digital transformation solution package." },
+  ];
+
+  const categories = [
+    { value: "all", label: "All Categories" },
+    { value: "software", label: "Software" },
+    { value: "marketing", label: "Marketing" },
+    { value: "security", label: "Security" },
+    { value: "storage", label: "Storage" },
+    { value: "analytics", label: "Analytics" },
+    { value: "communication", label: "Communication" },
+    { value: "finance", label: "Finance" },
+  ];
 
   const filteredProducts = products.filter(product => {
-    const price = parseInt(product.price.replace('$', ''));
-    const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
-    const priceMatch = price >= priceRange[0] && price <= priceRange[1];
-    return categoryMatch && priceMatch;
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+    const matchesPrice = priceRange === "all" || 
+      (priceRange === "under-100" && product.price < 100) ||
+      (priceRange === "100-300" && product.price >= 100 && product.price <= 300) ||
+      (priceRange === "over-300" && product.price > 300);
+    
+    return matchesSearch && matchesCategory && matchesPrice;
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case "price-low": return a.price - b.price;
+      case "price-high": return b.price - a.price;
+      case "rating": return b.rating - a.rating;
+      default: return a.name.localeCompare(b.name);
+    }
   });
 
   return (
     <Layout>
-      <div className="py-20">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header Section */}
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">Our Premium Products</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover our carefully curated collection of high-quality products designed to meet your needs and exceed your expectations.
+          <div className="text-center animate-fade-in">
+            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+              Our Products
+            </h1>
+            <p className="text-xl max-w-3xl mx-auto opacity-90 leading-relaxed">
+              Discover our comprehensive range of business solutions designed to accelerate your growth and maximize your potential.
             </p>
           </div>
+        </div>
+      </section>
 
-          {/* Hero Banner */}
-          <div className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-lg p-12 mb-16 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h2 className="text-3xl font-bold mb-4">Limited Time Offer</h2>
-                <p className="text-xl mb-6 opacity-90">
-                  Get up to 30% off on selected products. Premium quality at unbeatable prices.
-                </p>
-                <Button variant="secondary" size="lg" className="hover:scale-105 transition-transform duration-300">
-                  Shop Sale Items
-                </Button>
-              </div>
-              <div className="h-64 bg-white/10 rounded-lg flex items-center justify-center">
-                <span className="text-white/70">Hero Product Image</span>
-              </div>
+      {/* Filters */}
+      <section className="py-12 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Input
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
+            
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger>
+                <Filter className="w-4 h-4 mr-2" />
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map(category => (
+                  <SelectItem key={category.value} value={category.value}>
+                    {category.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={priceRange} onValueChange={setPriceRange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Price Range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Prices</SelectItem>
+                <SelectItem value="under-100">Under $100</SelectItem>
+                <SelectItem value="100-300">$100 - $300</SelectItem>
+                <SelectItem value="over-300">Over $300</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Name A-Z</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+                <SelectItem value="rating">Highest Rated</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Filters Sidebar */}
-            <div className="lg:col-span-1 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <Card className="sticky top-6">
-                <CardHeader>
-                  <CardTitle>Filter Products</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Category Filter */}
-                  <div>
-                    <h3 className="font-semibold mb-3">Category</h3>
-                    <div className="space-y-2">
-                      {categories.map((category) => (
-                        <button
-                          key={category}
-                          onClick={() => setSelectedCategory(category)}
-                          className={`w-full text-left px-3 py-2 rounded transition-colors ${
-                            selectedCategory === category 
-                              ? 'bg-primary text-white' 
-                              : 'hover:bg-gray-100'
-                          }`}
-                        >
-                          {category}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Price Range Filter */}
-                  <div>
-                    <h3 className="font-semibold mb-3">Price Range</h3>
-                    <div className="space-y-3">
-                      <Slider
-                        value={priceRange}
-                        onValueChange={setPriceRange}
-                        max={500}
-                        min={0}
-                        step={10}
-                        className="w-full"
-                      />
-                      <div className="flex justify-between text-sm text-gray-600">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
+      {/* Products Grid */}
+      <section id="products" data-animate className={`py-24 bg-white transition-all duration-1000 ${isVisible.products ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {filteredProducts.map((product, index) => (
+              <Card key={product.id} className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in relative" style={{ animationDelay: `${index * 0.1}s` }}>
+                {product.popular && (
+                  <Badge className="absolute -top-2 -right-2 bg-yellow-400 text-black z-10">
+                    Popular
+                  </Badge>
+                )}
+                
+                <CardHeader className="pb-4">
+                  <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
+                    <span className="text-gray-500 font-medium">{product.image}</span>
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                      <div className="flex space-x-3">
+                        <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                          <Heart className="w-4 h-4" />
+                        </Button>
+                        <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300" style={{ transitionDelay: "0.1s" }}>
+                          <ShoppingCart className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   </div>
-
-                  {/* Quick Filters */}
-                  <div>
-                    <h3 className="font-semibold mb-3">Quick Filters</h3>
-                    <div className="space-y-2">
-                      <Button variant="outline" size="sm" className="w-full justify-start">
-                        Top Rated
-                      </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
-                        On Sale
-                      </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
-                        New Arrivals
-                      </Button>
+                  
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="outline" className="text-xs">
+                      {categories.find(c => c.value === product.category)?.label}
+                    </Badge>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
+                      <span className="text-sm text-gray-600">{product.rating}</span>
                     </div>
+                  </div>
+                  
+                  <CardTitle className="text-lg line-clamp-2">{product.name}</CardTitle>
+                  <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
+                </CardHeader>
+                
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-primary">${product.price}</span>
+                    <Button size="sm" asChild className="hover:scale-110 transition-transform duration-300">
+                      <Link to={`/product/${product.id}`}>View Details</Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-
-            {/* Products Grid */}
-            <div className="lg:col-span-3">
-              {/* Sort Bar */}
-              <div className="flex justify-between items-center mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-                <p className="text-gray-600">
-                  Showing {filteredProducts.length} of {products.length} products
-                </p>
-                <select className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>Sort by: Featured</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
-                  <option>Customer Rating</option>
-                  <option>Newest First</option>
-                </select>
-              </div>
-
-              {/* Products Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
-                {filteredProducts.map((product, index) => (
-                  <Card 
-                    key={product.id} 
-                    className="hover:shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in"
-                    style={{ animationDelay: `${(index + 4) * 0.1}s` }}
-                  >
-                    <CardHeader className="pb-4">
-                      <div className="relative">
-                        <div className="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                          <span className="text-gray-500">Product Image</span>
-                        </div>
-                        {product.originalPrice !== product.price && (
-                          <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
-                            SALE
-                          </div>
-                        )}
-                        <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded text-xs font-semibold">
-                          ⭐ {product.rating}
-                        </div>
-                      </div>
-                      <CardTitle className="text-lg">{product.name}</CardTitle>
-                      <CardDescription className="line-clamp-2">{product.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex items-center mb-3">
-                        <span className="text-2xl font-bold text-primary">{product.price}</span>
-                        {product.originalPrice !== product.price && (
-                          <span className="text-sm text-gray-500 line-through ml-2">{product.originalPrice}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center mb-4 text-sm text-gray-600">
-                        <div className="flex text-yellow-400 mr-2">
-                          {[...Array(5)].map((_, i) => (
-                            <span key={i}>⭐</span>
-                          ))}
-                        </div>
-                        <span>({product.reviews} reviews)</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button className="flex-1" asChild>
-                          <Link to={`/product/${product.id}`}>View Details</Link>
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          ♡
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Load More */}
-              <div className="text-center animate-fade-in" style={{ animationDelay: "0.8s" }}>
-                <Button size="lg" variant="outline" className="hover:scale-105 transition-transform duration-300">
-                  Load More Products
-                </Button>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Featured Brands */}
-          <div className="mt-20 animate-fade-in" style={{ animationDelay: "0.9s" }}>
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Featured Brands</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {[1, 2, 3, 4, 5, 6].map((brand) => (
-                <div key={brand} className="bg-gray-100 rounded-lg p-6 flex items-center justify-center hover:shadow-md transition-shadow">
-                  <span className="text-gray-500">Brand {brand}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Newsletter Signup */}
-          <div className="mt-20 bg-gray-50 rounded-lg p-12 text-center animate-fade-in" style={{ animationDelay: "1s" }}>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Stay Updated</h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Be the first to know about new products, exclusive deals, and special offers.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <Button className="px-8 hover:scale-105 transition-transform duration-300">
-                Subscribe
+          
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-gray-500 text-xl">No products found matching your criteria.</p>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedCategory("all");
+                  setPriceRange("all");
+                }}
+              >
+                Clear Filters
               </Button>
             </div>
+          )}
+        </div>
+      </section>
+
+      {/* Related Products */}
+      <section id="related" data-animate className={`py-24 bg-gray-50 transition-all duration-1000 ${isVisible.related ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">Product Bundles</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover our specially curated product bundles designed to provide comprehensive solutions for your business needs.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {relatedProducts.map((product, index) => (
+              <Card key={product.id} className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <CardHeader className="pb-4">
+                  <div className="w-full h-40 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl mb-4 flex items-center justify-center">
+                    <span className="text-primary font-medium">{product.image}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="outline" className="text-xs bg-primary/10 text-primary">
+                      Bundle
+                    </Badge>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
+                      <span className="text-sm text-gray-600">{product.rating}</span>
+                    </div>
+                  </div>
+                  
+                  <CardTitle className="text-lg line-clamp-2">{product.name}</CardTitle>
+                  <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
+                </CardHeader>
+                
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-primary">${product.price}</span>
+                    <Button size="sm" asChild className="hover:scale-110 transition-transform duration-300">
+                      <Link to={`/product/${product.id}`}>Learn More</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 bg-gradient-to-br from-primary to-primary/90 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in">
+          <h2 className="text-4xl font-bold mb-6">Need Help Choosing?</h2>
+          <p className="text-xl mb-10 opacity-90 leading-relaxed">
+            Our product specialists are here to help you find the perfect solution for your business needs.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button size="lg" variant="secondary" className="text-lg px-10 py-4 hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold" asChild>
+              <Link to="/contact">Get Expert Advice</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="text-lg px-10 py-4 border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105 transition-all duration-300" asChild>
+              <Link to="/booking">Schedule Demo</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };
