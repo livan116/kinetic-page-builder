@@ -5,13 +5,14 @@ import Footer from "./Footer";
 
 interface LayoutProps {
   children: ReactNode;
+  className?: string;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, className = "" }: LayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <Navigation />
-      <main className="flex-grow">
+      <main className={`flex-grow ${className}`}>
         {children}
       </main>
       <Footer />

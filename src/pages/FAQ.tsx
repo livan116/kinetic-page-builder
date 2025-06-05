@@ -2,130 +2,92 @@
 import Layout from "@/components/Layout";
 import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { MessageCircle, Phone, Mail, Clock } from "lucide-react";
+import { MessageCircle, Phone, Mail } from "lucide-react";
 
 const FAQ = () => {
-  const faqs = [
+  const faqCategories = [
     {
-      category: "General",
+      category: "General Questions",
       questions: [
         {
           question: "What services do you offer?",
-          answer: "We offer comprehensive business consulting services including strategic planning, digital transformation, process optimization, team development, and technology integration. Our solutions are tailored to meet the unique needs of each client."
+          answer: "We offer a comprehensive range of business solutions including digital marketing, web development, business consulting, and custom software solutions. Our services are designed to help businesses of all sizes achieve their goals and drive growth."
         },
         {
           question: "How do I get started?",
-          answer: "Getting started is easy! Simply book a free consultation through our website, and one of our experts will reach out to discuss your needs and create a customized plan for your business."
+          answer: "Getting started is easy! Simply contact us through our website, schedule a consultation, or give us a call. We'll discuss your needs, provide a customized solution, and guide you through the entire process."
         },
         {
-          question: "Do you work with small businesses?",
-          answer: "Absolutely! We work with businesses of all sizes, from startups and small businesses to large enterprises. Our solutions are scalable and can be adapted to fit any budget and business size."
+          question: "Do you work with businesses of all sizes?",
+          answer: "Yes, we work with businesses ranging from startups to large enterprises. Our solutions are scalable and can be customized to meet the specific needs and budget of any organization."
         }
       ]
     },
     {
-      category: "Pricing & Plans",
+      category: "Pricing & Billing",
       questions: [
         {
-          question: "What is your pricing structure?",
-          answer: "We offer flexible pricing options including project-based pricing, monthly retainers, and hourly consulting rates. Our pricing is transparent with no hidden fees, and we provide detailed quotes before starting any work."
+          question: "How much do your services cost?",
+          answer: "Our pricing varies depending on the specific services and scope of work. We offer competitive rates and flexible pricing models including project-based, monthly retainers, and custom packages. Contact us for a personalized quote."
         },
         {
-          question: "Do you offer refunds?",
-          answer: "Yes, we offer a 30-day money-back guarantee on all our annual plans. For monthly subscriptions, you can cancel anytime and won't be charged for the next billing cycle. Enterprise customers have custom refund terms based on their agreement."
+          question: "Do you offer payment plans?",
+          answer: "Yes, we offer flexible payment options including monthly payment plans for larger projects. We accept various payment methods including credit cards, bank transfers, and online payments."
         },
         {
-          question: "Can I upgrade or downgrade my plan?",
-          answer: "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and you'll be billed prorated for any upgrades or receive credits for downgrades."
+          question: "Is there a setup fee?",
+          answer: "Setup fees vary depending on the service. Some services have no setup fee, while others may include an initial setup cost. This will be clearly outlined in your project proposal."
         }
       ]
     },
     {
-      category: "Support & Services",
+      category: "Support & Maintenance",
       questions: [
         {
-          question: "What support options are available?",
-          answer: "We offer multiple support channels: 24/7 email support for all plans, priority support for Professional plans, and dedicated phone support for Enterprise customers. We also have an extensive knowledge base and video tutorials."
+          question: "What kind of support do you provide?",
+          answer: "We provide comprehensive support including technical assistance, regular maintenance, updates, and ongoing consultation. Our support team is available via email, phone, and live chat during business hours."
         },
         {
-          question: "How quickly can you start working on my project?",
-          answer: "Typically, we can start working on your project within 1-2 weeks of signing the agreement, depending on our current workload and the complexity of your project. Urgent projects can often be accommodated with expedited timelines."
+          question: "How quickly do you respond to support requests?",
+          answer: "We typically respond to support requests within 2-4 hours during business hours. For urgent issues, we offer priority support with faster response times for our premium service clients."
         },
         {
-          question: "Do you provide ongoing support after project completion?",
-          answer: "Yes! We offer ongoing support and maintenance packages to ensure your solutions continue to perform optimally. This includes regular check-ins, updates, and troubleshooting as needed."
+          question: "Do you provide training?",
+          answer: "Yes, we provide comprehensive training for all our solutions. This includes initial training sessions, documentation, video tutorials, and ongoing support to ensure your team can effectively use our services."
         }
       ]
-    },
-    {
-      category: "Process & Timeline",
-      questions: [
-        {
-          question: "What does your typical process look like?",
-          answer: "Our process typically includes: 1) Initial consultation and assessment, 2) Strategy development and planning, 3) Implementation and execution, 4) Testing and optimization, 5) Training and knowledge transfer, 6) Ongoing support and monitoring."
-        },
-        {
-          question: "How long do projects typically take?",
-          answer: "Project timelines vary depending on scope and complexity. Small projects may take 2-4 weeks, while comprehensive transformations can take 3-6 months or longer. We provide detailed timelines during the planning phase."
-        },
-        {
-          question: "Can I make changes to the project scope?",
-          answer: "Yes, we understand that business needs can evolve. We're flexible with scope changes and will work with you to adjust timelines and budgets accordingly. All changes are documented and approved before implementation."
-        }
-      ]
-    }
-  ];
-
-  const contactOptions = [
-    {
-      icon: <MessageCircle className="w-6 h-6" />,
-      title: "Live Chat",
-      description: "Get instant answers to your questions",
-      action: "Start Chat",
-      available: "Available 24/7"
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "Phone Support",
-      description: "Speak directly with our experts",
-      action: "Call Now",
-      available: "Mon-Fri 9AM-6PM"
-    },
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email Support",
-      description: "Send us detailed questions",
-      action: "Send Email",
-      available: "Response within 4 hours"
     }
   ];
 
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center animate-fade-in">
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
-              Frequently Asked Questions
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto opacity-90 leading-relaxed">
-              Find answers to common questions about our services, processes, and policies. Can't find what you're looking for? Contact our support team.
-            </p>
-          </div>
+      <Section background="gradient" className="py-20 md:py-24 lg:py-28">
+        <div className="text-center animate-fade-in">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            Frequently Asked <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Questions</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Find answers to common questions about our services, pricing, and support. Can't find what you're looking for? Contact us directly.
+          </p>
         </div>
-      </section>
+      </Section>
 
-      {/* FAQ Section */}
+      {/* FAQ Content */}
       <Section background="white">
         <div className="max-w-4xl mx-auto">
-          {faqs.map((category, categoryIndex) => (
-            <div key={category.category} className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          {faqCategories.map((category, categoryIndex) => (
+            <div key={category.category} className="mb-12 animate-fade-in" style={{ animationDelay: `${categoryIndex * 0.1}s` }}>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
                 {category.category}
               </h2>
               
@@ -133,15 +95,18 @@ const FAQ = () => {
                 {category.questions.map((faq, index) => (
                   <AccordionItem 
                     key={index} 
-                    value={`${categoryIndex}-${index}`} 
-                    className="bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    value={`${categoryIndex}-${index}`}
+                    className="border border-gray-200 rounded-lg px-6 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
                   >
-                    <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
-                      <span className="font-semibold text-lg text-gray-900">{faq.question}</span>
+                    <AccordionTrigger className="text-left hover:no-underline py-6">
+                      <span className="text-lg font-semibold text-gray-900 pr-4">
+                        {faq.question}
+                      </span>
                     </AccordionTrigger>
-                    <AccordionContent className="px-6 pb-4 text-gray-600 text-base leading-relaxed">
-                      {faq.answer}
+                    <AccordionContent className="pb-6">
+                      <div className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -153,50 +118,53 @@ const FAQ = () => {
 
       {/* Contact Support Section */}
       <Section background="gray">
-        <SectionHeader 
-          title="Still Need Help?"
-          subtitle="Our support team is here to assist you with any questions or concerns you may have."
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {contactOptions.map((option, index) => (
-            <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 shadow-lg animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <div className="text-primary">{option.icon}</div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{option.title}</h3>
-                <p className="text-gray-600 mb-4">{option.description}</p>
-                <div className="flex items-center justify-center text-sm text-gray-500 mb-6">
-                  <Clock className="w-4 h-4 mr-2" />
-                  {option.available}
-                </div>
-                <Button className="w-full hover:scale-105 transition-transform duration-300">
-                  {option.action}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Additional Resources */}
-      <Section background="white">
-        <div className="text-center max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Additional Resources</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Explore our knowledge base and resources to learn more about our services and best practices.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" variant="outline" className="hover:scale-105 transition-transform duration-300" asChild>
-              <Link to="/about">About Us</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="hover:scale-105 transition-transform duration-300" asChild>
-              <Link to="/services">Our Services</Link>
-            </Button>
-            <Button size="lg" className="hover:scale-105 transition-transform duration-300" asChild>
-              <Link to="/contact">Contact Us</Link>
-            </Button>
+        <div className="max-w-4xl mx-auto text-center">
+          <SectionHeader 
+            title="Still Have Questions?"
+            subtitle="Our support team is here to help you with any additional questions or concerns."
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {[
+              {
+                icon: MessageCircle,
+                title: "Live Chat",
+                description: "Chat with our support team in real-time",
+                action: "Start Chat",
+                link: "/contact"
+              },
+              {
+                icon: Phone,
+                title: "Phone Support",
+                description: "Call us during business hours",
+                action: "Call Now",
+                link: "tel:+1-555-123-4567"
+              },
+              {
+                icon: Mail,
+                title: "Email Support",
+                description: "Send us a detailed message",
+                action: "Send Email",
+                link: "mailto:support@company.com"
+              }
+            ].map((contact, index) => (
+              <Card key={contact.title} className="text-center hover:shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <contact.icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{contact.title}</h3>
+                  <p className="text-gray-600 mb-6">{contact.description}</p>
+                  <Button className="w-full" asChild>
+                    {contact.link.startsWith('http') || contact.link.startsWith('tel:') || contact.link.startsWith('mailto:') ? (
+                      <a href={contact.link}>{contact.action}</a>
+                    ) : (
+                      <Link to={contact.link}>{contact.action}</Link>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </Section>

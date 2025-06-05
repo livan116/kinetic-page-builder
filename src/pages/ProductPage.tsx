@@ -1,295 +1,258 @@
-
 import Layout from "@/components/Layout";
+import Section from "@/components/ui/section";
+import SectionHeader from "@/components/ui/section-header";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Search, Filter, Star, Heart, ShoppingCart } from "lucide-react";
+import { Star, ShoppingCart, Heart } from "lucide-react";
 
 const ProductPage = () => {
-  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [priceRange, setPriceRange] = useState("all");
-  const [sortBy, setSortBy] = useState("name");
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(prev => ({
-              ...prev,
-              [entry.target.id]: true
-            }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const elements = document.querySelectorAll('[data-animate]');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   const products = [
-    { id: 1, name: "Premium Business Suite", category: "software", price: 299, rating: 4.8, image: "Product Image 1", description: "Complete business management solution with advanced analytics and reporting capabilities.", popular: true },
-    { id: 2, name: "Digital Marketing Toolkit", category: "marketing", price: 199, rating: 4.6, image: "Product Image 2", description: "Comprehensive set of digital marketing tools and automation features.", popular: false },
-    { id: 3, name: "Enterprise Security Package", category: "security", price: 499, rating: 4.9, image: "Product Image 3", description: "Advanced security solutions for enterprise-level protection and compliance.", popular: true },
-    { id: 4, name: "Cloud Storage Pro", category: "storage", price: 99, rating: 4.5, image: "Product Image 4", description: "Scalable cloud storage solution with real-time sync and collaboration features.", popular: false },
-    { id: 5, name: "Analytics Dashboard Plus", category: "analytics", price: 149, rating: 4.7, image: "Product Image 5", description: "Advanced analytics and visualization tools for data-driven decision making.", popular: false },
-    { id: 6, name: "Communication Hub", category: "communication", price: 79, rating: 4.4, image: "Product Image 6", description: "Unified communication platform for seamless team collaboration.", popular: false },
-    { id: 7, name: "Project Management Elite", category: "software", price: 249, rating: 4.8, image: "Product Image 7", description: "Professional project management with advanced scheduling and resource allocation.", popular: true },
-    { id: 8, name: "Financial Planning Suite", category: "finance", price: 399, rating: 4.9, image: "Product Image 8", description: "Comprehensive financial planning and forecasting tools for businesses.", popular: false },
-  ];
-
-  const relatedProducts = [
-    { id: 9, name: "Startup Accelerator Pack", category: "bundle", price: 199, rating: 4.6, image: "Related Product 1", description: "Essential tools and resources for startup businesses." },
-    { id: 10, name: "Small Business Essentials", category: "bundle", price: 149, rating: 4.5, image: "Related Product 2", description: "Complete package for small business operations." },
-    { id: 11, name: "Enterprise Growth Kit", category: "bundle", price: 599, rating: 4.8, image: "Related Product 3", description: "Advanced solutions for scaling enterprise operations." },
-    { id: 12, name: "Digital Transformation Bundle", category: "bundle", price: 799, rating: 4.9, image: "Related Product 4", description: "Complete digital transformation solution package." },
-  ];
-
-  const categories = [
-    { value: "all", label: "All Categories" },
-    { value: "software", label: "Software" },
-    { value: "marketing", label: "Marketing" },
-    { value: "security", label: "Security" },
-    { value: "storage", label: "Storage" },
-    { value: "analytics", label: "Analytics" },
-    { value: "communication", label: "Communication" },
-    { value: "finance", label: "Finance" },
-  ];
-
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    const matchesPrice = priceRange === "all" || 
-      (priceRange === "under-100" && product.price < 100) ||
-      (priceRange === "100-300" && product.price >= 100 && product.price <= 300) ||
-      (priceRange === "over-300" && product.price > 300);
-    
-    return matchesSearch && matchesCategory && matchesPrice;
-  }).sort((a, b) => {
-    switch (sortBy) {
-      case "price-low": return a.price - b.price;
-      case "price-high": return b.price - a.price;
-      case "rating": return b.rating - a.rating;
-      default: return a.name.localeCompare(b.name);
+    {
+      id: 1,
+      name: "Premium Business Suite",
+      price: 299,
+      originalPrice: 399,
+      rating: 4.8,
+      reviews: 124,
+      category: "Business Tools",
+      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=300&fit=crop",
+      features: ["Advanced Analytics", "Team Collaboration", "24/7 Support", "Custom Branding"]
+    },
+    {
+      id: 2,
+      name: "Digital Marketing Toolkit",
+      price: 199,
+      originalPrice: 249,
+      rating: 4.9,
+      reviews: 89,
+      category: "Marketing",
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop",
+      features: ["SEO Tools", "Social Media Manager", "Email Campaigns", "Analytics Dashboard"]
+    },
+    {
+      id: 3,
+      name: "Web Development Package",
+      price: 499,
+      originalPrice: 599,
+      rating: 4.7,
+      reviews: 62,
+      category: "Web Development",
+      image: "https://images.unsplash.com/photo-1519389950473-47a04ca0ecd8?w=400&h=300&fit=crop",
+      features: ["Custom Design", "Responsive Layout", "E-commerce Ready", "CMS Integration"]
+    },
+    {
+      id: 4,
+      name: "Financial Planning Software",
+      price: 349,
+      originalPrice: 449,
+      rating: 4.6,
+      reviews: 45,
+      category: "Finance",
+      image: "https://images.unsplash.com/photo-1507838153414-b4b79886a8a7?w=400&h=300&fit=crop",
+      features: ["Budgeting Tools", "Investment Tracking", "Tax Planning", "Reporting"]
     }
-  });
+  ];
+
+  const productBundles = [
+    {
+      id: 1,
+      name: "Starter Bundle",
+      description: "Perfect for small businesses getting started",
+      price: "$199",
+      originalPrice: "$299",
+      products: ["Basic CRM", "Email Marketing", "Analytics"],
+      savings: "Save $100"
+    },
+    {
+      id: 2,
+      name: "Growth Bundle",
+      description: "Ideal for growing businesses looking to scale",
+      price: "$399",
+      originalPrice: "$499",
+      products: ["Advanced CRM", "Marketing Automation", "Business Intelligence"],
+      savings: "Save $100"
+    },
+    {
+      id: 3,
+      name: "Enterprise Bundle",
+      description: "Comprehensive suite for large organizations",
+      price: "$799",
+      originalPrice: "$999",
+      products: ["Enterprise CRM", "AI Marketing", "Predictive Analytics"],
+      savings: "Save $200"
+    }
+  ];
 
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center animate-fade-in">
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
-              Our Products
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto opacity-90 leading-relaxed">
-              Discover our comprehensive range of business solutions designed to accelerate your growth and maximize your potential.
-            </p>
-          </div>
+      <Section background="gradient" className="py-20 md:py-24 lg:py-28">
+        <div className="text-center animate-fade-in">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            Our <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Products</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Discover our comprehensive range of products designed to transform your business and drive growth.
+          </p>
         </div>
-      </section>
-
-      {/* Filters */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <Input
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger>
-                <Filter className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map(category => (
-                  <SelectItem key={category.value} value={category.value}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={priceRange} onValueChange={setPriceRange}>
-              <SelectTrigger>
-                <SelectValue placeholder="Price Range" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Prices</SelectItem>
-                <SelectItem value="under-100">Under $100</SelectItem>
-                <SelectItem value="100-300">$100 - $300</SelectItem>
-                <SelectItem value="over-300">Over $300</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sort By" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="name">Name A-Z</SelectItem>
-                <SelectItem value="price-low">Price: Low to High</SelectItem>
-                <SelectItem value="price-high">Price: High to Low</SelectItem>
-                <SelectItem value="rating">Highest Rated</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-      </section>
+      </Section>
 
       {/* Products Grid */}
-      <section id="products" data-animate className={`py-24 bg-white transition-all duration-1000 ${isVisible.products ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredProducts.map((product, index) => (
-              <Card key={product.id} className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in relative" style={{ animationDelay: `${index * 0.1}s` }}>
-                {product.popular && (
-                  <Badge className="absolute -top-2 -right-2 bg-yellow-400 text-black z-10">
-                    Popular
-                  </Badge>
-                )}
-                
-                <CardHeader className="pb-4">
-                  <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl mb-4 flex items-center justify-center relative overflow-hidden group">
-                    <span className="text-gray-500 font-medium">{product.image}</span>
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                      <div className="flex space-x-3">
-                        <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                          <Heart className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="secondary" className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300" style={{ transitionDelay: "0.1s" }}>
-                          <ShoppingCart className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="outline" className="text-xs">
-                      {categories.find(c => c.value === product.category)?.label}
-                    </Badge>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm text-gray-600">{product.rating}</span>
-                    </div>
-                  </div>
-                  
-                  <CardTitle className="text-lg line-clamp-2">{product.name}</CardTitle>
-                  <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">${product.price}</span>
-                    <Button size="sm" asChild className="hover:scale-110 transition-transform duration-300">
-                      <Link to={`/product/${product.id}`}>View Details</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-gray-500 text-xl">No products found matching your criteria.</p>
-              <Button 
-                variant="outline" 
-                className="mt-4"
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedCategory("all");
-                  setPriceRange("all");
-                }}
-              >
-                Clear Filters
-              </Button>
-            </div>
-          )}
-        </div>
-      </section>
+      <Section background="white">
+        <SectionHeader 
+          title="Featured Products"
+          subtitle="Explore our best-selling products trusted by thousands of businesses worldwide."
+        />
 
-      {/* Related Products */}
-      <section id="related" data-animate className={`py-24 bg-gray-50 transition-all duration-1000 ${isVisible.related ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Product Bundles</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover our specially curated product bundles designed to provide comprehensive solutions for your business needs.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {relatedProducts.map((product, index) => (
-              <Card key={product.id} className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                <CardHeader className="pb-4">
-                  <div className="w-full h-40 bg-gradient-to-br from-primary/10 to-primary/20 rounded-xl mb-4 flex items-center justify-center">
-                    <span className="text-primary font-medium">{product.image}</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product, index) => (
+            <Card 
+              key={product.id} 
+              className="group h-full bg-white shadow-lg border-0 transition-all duration-300 hover:shadow-2xl hover:scale-105 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="relative overflow-hidden rounded-t-lg">
+                <img 
+                  src={product.image} 
+                  alt={product.name}
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-primary/90 text-white">
+                    {product.category}
+                  </Badge>
+                </div>
+                <div className="absolute top-4 right-4">
+                  <Button size="sm" variant="outline" className="bg-white/90 border-0 hover:bg-white">
+                    <Heart className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
+                    <span className="text-sm text-gray-600">{product.rating} ({product.reviews})</span>
                   </div>
-                  
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="outline" className="text-xs bg-primary/10 text-primary">
-                      Bundle
+                  {product.originalPrice > product.price && (
+                    <Badge variant="destructive" className="text-xs">
+                      Save ${product.originalPrice - product.price}
                     </Badge>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                      <span className="text-sm text-gray-600">{product.rating}</span>
-                    </div>
+                  )}
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                  {product.name}
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="pt-0">
+                <ul className="space-y-1 mb-4 text-sm text-gray-600">
+                  {product.features.slice(0, 3).map((feature, idx) => (
+                    <li key={idx} className="flex items-center">
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></div>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-2xl font-bold text-gray-900">${product.price}</span>
+                    {product.originalPrice > product.price && (
+                      <span className="text-lg text-gray-500 line-through">${product.originalPrice}</span>
+                    )}
                   </div>
-                  
-                  <CardTitle className="text-lg line-clamp-2">{product.name}</CardTitle>
-                  <CardDescription className="text-sm line-clamp-3">{product.description}</CardDescription>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-primary">${product.price}</span>
-                    <Button size="sm" asChild className="hover:scale-110 transition-transform duration-300">
-                      <Link to={`/product/${product.id}`}>Learn More</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </div>
+
+                <div className="flex space-x-2">
+                  <Button className="flex-1 bg-primary hover:bg-primary/90 transition-all duration-300" asChild>
+                    <Link to={`/product/${product.id}`}>
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      View Details
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </section>
+      </Section>
+
+      {/* Product Bundles */}
+      <Section background="gray">
+        <SectionHeader 
+          title="Product Bundles"
+          subtitle="Save more with our carefully curated product bundles designed for maximum value."
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {productBundles.map((bundle, index) => (
+            <Card 
+              key={bundle.id}
+              className="h-full bg-white shadow-lg border-0 transition-all duration-300 hover:shadow-2xl hover:scale-105 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <CardHeader>
+                <div className="flex items-center justify-between mb-2">
+                  <Badge className="bg-green-100 text-green-800">
+                    {bundle.savings}
+                  </Badge>
+                </div>
+                <CardTitle className="text-xl font-bold text-gray-900">{bundle.name}</CardTitle>
+                <p className="text-gray-600">{bundle.description}</p>
+              </CardHeader>
+
+              <CardContent>
+                <div className="mb-4">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <span className="text-3xl font-bold text-primary">{bundle.price}</span>
+                    <span className="text-lg text-gray-500 line-through">{bundle.originalPrice}</span>
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <h4 className="font-semibold text-gray-900 mb-3">Includes:</h4>
+                  <ul className="space-y-2">
+                    {bundle.products.map((product, idx) => (
+                      <li key={idx} className="flex items-center text-sm text-gray-700">
+                        <div className="w-2 h-2 bg-primary rounded-full mr-3"></div>
+                        {product}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:scale-105">
+                  Get Bundle
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </Section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fade-in">
-          <h2 className="text-4xl font-bold mb-6">Need Help Choosing?</h2>
-          <p className="text-xl mb-10 opacity-90 leading-relaxed">
-            Our product specialists are here to help you find the perfect solution for your business needs.
+      <Section background="primary" className="text-center">
+        <div className="max-w-4xl mx-auto animate-fade-in">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+            Ready to Transform Your Business?
+          </h2>
+          <p className="text-xl text-white/90 mb-8 leading-relaxed">
+            Join thousands of satisfied customers who have already revolutionized their workflow with our products.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-10 py-4 hover:scale-105 transition-transform duration-300 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold" asChild>
-              <Link to="/contact">Get Expert Advice</Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 transition-all duration-300 hover:scale-105">
+              <Link to="/contact">Contact Sales</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-10 py-4 border-2 border-white text-white hover:bg-white hover:text-primary hover:scale-105 transition-all duration-300" asChild>
-              <Link to="/booking">Schedule Demo</Link>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary transition-all duration-300 hover:scale-105">
+              <Link to="/pricing">View Pricing</Link>
             </Button>
           </div>
         </div>
-      </section>
+      </Section>
     </Layout>
   );
 };

@@ -1,6 +1,7 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -8,53 +9,69 @@ interface PricingCardProps {
   name: string;
   price: string;
   period: string;
+  description: string;
   features: string[];
-  popular: boolean;
+  popular?: boolean;
   index?: number;
+  buttonText?: string;
+  buttonLink?: string;
 }
 
-const PricingCard = ({ name, price, period, features, popular, index = 0 }: PricingCardProps) => {
+const PricingCard = ({ 
+  name, 
+  price, 
+  period, 
+  description, 
+  features, 
+  popular = false, 
+  index = 0,
+  buttonText = "Get Started",
+  buttonLink = "/pricing"
+}: PricingCardProps) => {
   return (
     <Card 
-      className={`hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg h-full animate-fade-in py-8 ${
-        popular ? 'ring-4 ring-primary/50 transform scale-110 lg:scale-110' : ''
+      className={`relative h-full transition-all duration-300 hover:shadow-2xl hover:scale-105 border-0 shadow-lg animate-fade-in ${
+        popular 
+          ? "ring-2 ring-primary bg-gradient-to-br from-primary/5 to-white" 
+          : "hover:shadow-xl bg-white"
       }`}
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       {popular && (
-        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2">
-          <span className="bg-primary text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
-            Most Popular
-          </span>
-        </div>
+        <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-primary/80 text-white px-4 py-1 shadow-lg">
+          Most Popular
+        </Badge>
       )}
-      <CardHeader className="text-center pt-12 pb-6">
-        <CardTitle className="text-2xl mb-2">{name}</CardTitle>
-        <div className="mb-6">
-          <span className="text-5xl font-bold text-primary">{price}</span>
-          <span className="text-gray-600 ml-2">/{period}</span>
+      
+      <CardHeader className="text-center pb-6 pt-8">
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">{name}</h3>
+        <p className="text-gray-600 mb-6">{description}</p>
+        
+        <div className="flex items-baseline justify-center mb-4">
+          <span className="text-4xl md:text-5xl font-bold text-gray-900">{price}</span>
+          <span className="text-gray-600 ml-1">/{period}</span>
         </div>
       </CardHeader>
-      <CardContent className="px-8 pb-8">
+      
+      <CardContent className="pt-0 pb-8">
         <ul className="space-y-4 mb-8">
           {features.map((feature, idx) => (
-            <li key={idx} className="flex items-center">
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                <Check className="w-3 h-3 text-white" />
-              </div>
-              <span className="text-gray-600">{feature}</span>
+            <li key={idx} className="flex items-start">
+              <Check className="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
+              <span className="text-gray-700 leading-relaxed">{feature}</span>
             </li>
           ))}
         </ul>
+        
         <Button 
-          className={`w-full hover:scale-105 transition-transform duration-300 ${
-            popular ? 'bg-primary shadow-lg' : ''
+          className={`w-full py-6 text-base font-semibold transition-all duration-300 hover:scale-105 ${
+            popular 
+              ? "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl" 
+              : "bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white"
           }`}
-          variant={popular ? "default" : "outline"}
-          size="lg"
           asChild
         >
-          <Link to="/checkout">Get Started</Link>
+          <Link to={buttonLink}>{buttonText}</Link>
         </Button>
       </CardContent>
     </Card>
