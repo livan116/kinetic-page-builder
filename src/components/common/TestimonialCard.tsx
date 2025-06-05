@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star } from "lucide-react";
 
@@ -13,8 +12,8 @@ interface TestimonialCardProps {
 
 const TestimonialCard = ({ name, role, rating, text, image, index = 0 }: TestimonialCardProps) => {
   return (
-    <Card 
-      className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg h-full animate-fade-in"
+    <Card
+      className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-gray-200 shadow-lg h-full min-h-[400px] w-full bg-white animate-fade-in flex flex-col justify-between"
       style={{ animationDelay: `${index * 0.1}s` }}
     >
       <CardHeader className="pb-6">

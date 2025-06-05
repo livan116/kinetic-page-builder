@@ -1,4 +1,3 @@
-
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
@@ -23,17 +22,17 @@ const PricingCarousel = () => {
     },
     {
       name: "Professional",
-      description: "Ideal for growing businesses",
+      description: "Ideal for growing enterprise businesses",
       price: "$99",
       period: "/month",
       features: [
         "Up to 25 team members",
         "100GB storage",
-        "Priority support",
+
         "Advanced analytics",
         "Custom integrations"
       ],
-      popular: true,
+      popular: false,
       icon: "⭐"
     },
     {
@@ -45,9 +44,9 @@ const PricingCarousel = () => {
         "Unlimited team members",
         "1TB storage",
         "24/7 dedicated support",
-        "Advanced security",
+       
         "Custom solutions",
-        "On-premise deployment"
+
       ],
       popular: false,
       icon: "🏢"
@@ -56,20 +55,20 @@ const PricingCarousel = () => {
 
   return (
     <Section id="pricing" background="gray">
-      <SectionHeader 
+      <SectionHeader
         title="Choose Your Plan"
         subtitle="Select the perfect plan that fits your needs and budget. Upgrade or downgrade at any time."
       />
-      
+
       <div className="block md:hidden">
-        <Carousel 
+        <Carousel
           className="w-full max-w-sm mx-auto"
           plugins={[Autoplay({ delay: 4000 })]}
           opts={{ align: "center", loop: true }}
         >
-          <CarouselContent>
+          <CarouselContent className="!ml-0">
             {pricingPlans.map((plan, index) => (
-              <CarouselItem key={index} className="px-4">
+              <CarouselItem key={index} className="!pl-0 px-4 flex flex-col items-center w-full max-w-sm">
                 <PricingCard {...plan} index={index} />
               </CarouselItem>
             ))}
@@ -77,15 +76,18 @@ const PricingCarousel = () => {
         </Carousel>
       </div>
 
-      <div className="hidden md:block">
-        <Carousel 
-          className="w-full"
+      <div className="hidden md:flex justify-center">
+        <Carousel
+          className="w-full max-w-5xl mx-auto"
           plugins={[Autoplay({ delay: 4000 })]}
           opts={{ align: "center", loop: true }}
         >
-          <CarouselContent className="ml-4">
+          <CarouselContent className="!ml-0">
             {pricingPlans.map((plan, index) => (
-              <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+              <CarouselItem
+                key={index}
+                className="!pl-0 md:basis-1/2 lg:basis-1/3 flex justify-center w-full"
+              >
                 <PricingCard {...plan} index={index} />
               </CarouselItem>
             ))}

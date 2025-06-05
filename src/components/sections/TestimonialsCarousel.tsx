@@ -1,4 +1,3 @@
-
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
@@ -15,19 +14,19 @@ const TestimonialsCarousel = () => {
 
   return (
     <Section id="testimonials" background="gray">
-      <SectionHeader 
+      <SectionHeader
         title="Success Stories"
         subtitle="Hear from the industry leaders who have transformed their businesses with our solutions."
       />
-      
-      <Carousel 
-        className="w-full"
+
+      <Carousel
+        className="w-full max-w-4xl mx-auto"
         plugins={[Autoplay({ delay: 4000 })]}
-        opts={{ align: "start", loop: true, dragFree: true }}
+        opts={{ align: "center", loop: true }}
       >
-        <CarouselContent className="ml-4">
+        <CarouselContent className="!ml-0">
           {testimonials.map((testimonial, index) => (
-            <CarouselItem key={index} className="pl-4 md:basis-1/2">
+            <CarouselItem key={index} className="!pl-0 md:basis-1/2 lg:basis-1/3 flex flex-col items-stretch h-full px-4">
               <TestimonialCard {...testimonial} index={index} />
             </CarouselItem>
           ))}
