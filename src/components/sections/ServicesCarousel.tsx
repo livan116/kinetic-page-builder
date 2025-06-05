@@ -4,13 +4,38 @@ import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
 import ServiceCard from "@/components/common/ServiceCard";
 import Autoplay from "embla-carousel-autoplay";
+import { Settings, Zap, Palette, BarChart } from "lucide-react";
 
 const ServicesCarousel = () => {
   const services = [
-    { title: "Premium Consulting", description: "Expert business consulting services to accelerate your growth", price: "$299", image: "Service Image 1" },
-    { title: "Digital Strategy", description: "Comprehensive digital transformation strategies", price: "$449", image: "Service Image 2" },
-    { title: "Brand Development", description: "Complete brand identity and positioning services", price: "$599", image: "Service Image 3" },
-    { title: "Marketing Automation", description: "Advanced marketing automation and analytics", price: "$349", image: "Service Image 4" },
+    { 
+      title: "Premium Consulting", 
+      description: "Expert business consulting services to accelerate your growth", 
+      price: "$299", 
+      image: "Service Image 1",
+      icon: Settings
+    },
+    { 
+      title: "Digital Strategy", 
+      description: "Comprehensive digital transformation strategies", 
+      price: "$449", 
+      image: "Service Image 2",
+      icon: Zap
+    },
+    { 
+      title: "Brand Development", 
+      description: "Complete brand identity and positioning services", 
+      price: "$599", 
+      image: "Service Image 3",
+      icon: Palette
+    },
+    { 
+      title: "Marketing Automation", 
+      description: "Advanced marketing automation and analytics", 
+      price: "$349", 
+      image: "Service Image 4",
+      icon: BarChart
+    },
   ];
 
   return (
