@@ -1,7 +1,9 @@
 
 import Layout from "@/components/Layout";
+import Section from "@/components/ui/section";
+import SectionHeader from "@/components/ui/section-header";
+import PricingCard from "@/components/common/PricingCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 const MembershipPage = () => {
@@ -9,96 +11,76 @@ const MembershipPage = () => {
     {
       name: "Basic",
       price: "$29",
-      period: "/month",
+      period: "month",
       description: "Perfect for individuals getting started",
-      features: ["Feature 1", "Feature 2", "Feature 3", "Email Support"],
+      features: ["Up to 5 projects", "Basic analytics", "Email support", "Standard templates", "Mobile responsive design"],
       popular: false
     },
     {
-      name: "Pro",
+      name: "Professional",
       price: "$79",
-      period: "/month",
+      period: "month", 
       description: "Great for growing businesses",
-      features: ["All Basic features", "Feature 4", "Feature 5", "Priority Support", "Advanced Analytics"],
+      features: ["Unlimited projects", "Advanced analytics", "Priority support", "Premium templates", "Custom branding", "A/B testing"],
       popular: true
     },
     {
       name: "Enterprise",
       price: "$199",
-      period: "/month",
+      period: "month",
       description: "For large organizations",
-      features: ["All Pro features", "Custom Integration", "Dedicated Manager", "24/7 Phone Support", "Custom Training"],
+      features: ["Everything in Professional", "Custom integrations", "Dedicated manager", "24/7 phone support", "Custom training", "SLA guarantee"],
       popular: false
     }
   ];
 
   return (
     <Layout>
-      <div className="py-20">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">Membership Plans</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the perfect membership plan for your needs. Upgrade or downgrade anytime.
+          <div className="text-center animate-fade-in">
+            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
+              Membership Plans
+            </h1>
+            <p className="text-xl max-w-3xl mx-auto opacity-90 leading-relaxed">
+              Choose the perfect membership plan for your needs. Upgrade or downgrade anytime with our flexible options.
             </p>
           </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plans.map((plan, index) => (
-              <Card 
-                key={plan.name} 
-                className={`relative hover:shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in ${
-                  plan.popular ? 'border-2 border-primary transform scale-105' : ''
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                <CardHeader className="text-center pt-8">
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <CardDescription>{plan.description}</CardDescription>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-primary">{plan.price}</span>
-                    <span className="text-gray-600">{plan.period}</span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                        <span className="text-gray-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button 
-                    className={`w-full hover:scale-105 transition-transform duration-300 ${
-                      plan.popular ? 'bg-primary' : ''
-                    }`}
-                    variant={plan.popular ? "default" : "outline"}
-                    asChild
-                  >
-                    <Link to="/checkout">Choose {plan.name}</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+      {/* Pricing Plans */}
+      <Section background="white">
+        <SectionHeader 
+          title="Choose Your Plan"
+          subtitle="Flexible pricing options designed to grow with your business needs."
+        />
 
-          <div className="text-center mt-16 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Not sure which plan is right for you?</h2>
-            <p className="text-gray-600 mb-6">Contact our team for a personalized recommendation.</p>
-            <Button size="lg" variant="outline" asChild className="hover:scale-105 transition-transform duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {plans.map((plan, index) => (
+            <PricingCard key={plan.name} {...plan} index={index} />
+          ))}
+        </div>
+      </Section>
+
+      {/* CTA Section */}
+      <Section background="gray">
+        <div className="text-center max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">Not sure which plan is right for you?</h2>
+          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            Contact our team for a personalized recommendation based on your specific needs and goals.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Button size="lg" className="hover:scale-105 transition-transform duration-300" asChild>
               <Link to="/contact">Contact Sales</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="hover:scale-105 transition-transform duration-300" asChild>
+              <Link to="/booking">Schedule Demo</Link>
             </Button>
           </div>
         </div>
-      </div>
+      </Section>
     </Layout>
   );
 };
