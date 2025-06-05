@@ -18,7 +18,8 @@ const PricingCarousel = () => {
         "Email support",
         "Basic analytics"
       ],
-      popular: false
+      popular: false,
+      icon: "🚀"
     },
     {
       name: "Professional",
@@ -32,7 +33,8 @@ const PricingCarousel = () => {
         "Advanced analytics",
         "Custom integrations"
       ],
-      popular: true
+      popular: true,
+      icon: "⭐"
     },
     {
       name: "Enterprise",
@@ -47,7 +49,8 @@ const PricingCarousel = () => {
         "Custom solutions",
         "On-premise deployment"
       ],
-      popular: false
+      popular: false,
+      icon: "🏢"
     }
   ];
 
@@ -58,19 +61,37 @@ const PricingCarousel = () => {
         subtitle="Select the perfect plan that fits your needs and budget. Upgrade or downgrade at any time."
       />
       
-      <Carousel 
-        className="w-full"
-        plugins={[Autoplay({ delay: 4000 })]}
-        opts={{ align: "center", loop: true }}
-      >
-        <CarouselContent className="ml-4">
-          {pricingPlans.map((plan, index) => (
-            <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-              <PricingCard {...plan} index={index} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      <div className="block md:hidden">
+        <Carousel 
+          className="w-full max-w-sm mx-auto"
+          plugins={[Autoplay({ delay: 4000 })]}
+          opts={{ align: "center", loop: true }}
+        >
+          <CarouselContent>
+            {pricingPlans.map((plan, index) => (
+              <CarouselItem key={index} className="px-4">
+                <PricingCard {...plan} index={index} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      <div className="hidden md:block">
+        <Carousel 
+          className="w-full"
+          plugins={[Autoplay({ delay: 4000 })]}
+          opts={{ align: "center", loop: true }}
+        >
+          <CarouselContent className="ml-4">
+            {pricingPlans.map((plan, index) => (
+              <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                <PricingCard {...plan} index={index} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
     </Section>
   );
 };

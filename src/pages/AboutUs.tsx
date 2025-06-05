@@ -4,42 +4,52 @@ import Section from "@/components/ui/section";
 import SectionHeader from "@/components/ui/section-header";
 import ImagePlaceholder from "@/components/ui/image-placeholder";
 import TestimonialCard from "@/components/common/TestimonialCard";
+import TeamMemberCard from "@/components/common/TeamMemberCard";
+import GalleryCard from "@/components/common/GalleryCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { Target, Award, Users, Shield, TrendingUp, Star } from "lucide-react";
+import { Target, Award, Users, Shield, TrendingUp } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 
 const AboutUs = () => {
-  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(prev => ({
-              ...prev,
-              [entry.target.id]: true
-            }));
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const elements = document.querySelectorAll('[data-animate]');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   const team = [
-    { name: "John Doe", role: "CEO & Founder", bio: "Visionary leader with 15+ years transforming businesses through innovative strategies and cutting-edge technology solutions." },
-    { name: "Jane Smith", role: "CTO", bio: "Tech pioneer specializing in scalable architectures and emerging technologies that drive digital transformation." },
-    { name: "Mike Johnson", role: "Head of Operations", bio: "Operations expert focused on streamlining processes and delivering exceptional client experiences at scale." },
+    { 
+      name: "Sarah Johnson", 
+      role: "CEO & Founder", 
+      bio: "Visionary leader with 15+ years transforming businesses through innovative strategies and cutting-edge technology solutions.",
+      image: "https://images.unsplash.com/photo-1494790108755-2616b612b5bb?w=300",
+      linkedin: "#",
+      twitter: "#",
+      email: "sarah@company.com"
+    },
+    { 
+      name: "Michael Chen", 
+      role: "CTO", 
+      bio: "Tech pioneer specializing in scalable architectures and emerging technologies that drive digital transformation.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300",
+      linkedin: "#",
+      twitter: "#",
+      email: "michael@company.com"
+    },
+    { 
+      name: "Emily Rodriguez", 
+      role: "Head of Operations", 
+      bio: "Operations expert focused on streamlining processes and delivering exceptional client experiences at scale.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300",
+      linkedin: "#",
+      email: "emily@company.com"
+    },
+    { 
+      name: "David Park", 
+      role: "Lead Designer", 
+      bio: "Creative visionary who combines user experience excellence with beautiful, functional design solutions.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300",
+      linkedin: "#",
+      twitter: "#",
+      email: "david@company.com"
+    }
   ];
 
   const services = [
@@ -109,28 +119,40 @@ const AboutUs = () => {
       rating: 5,
       text: "Their innovative approach and deep industry knowledge helped us capture new markets successfully.",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150"
-    },
-    {
-      name: "David Park",
-      role: "VP, ScaleUp Inc",
-      rating: 5,
-      text: "Outstanding service delivery and measurable results. They truly understand business transformation.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     }
   ];
 
-  const trustedBrands = [
-    "TechGiant Corp", "Innovation Labs", "Global Dynamics", "Future Systems", 
-    "Smart Solutions", "Digital Pioneer", "NextGen Technologies", "Elite Enterprises"
-  ];
-
   const galleryImages = [
-    { title: "Our Modern Office", description: "State-of-the-art workspace designed for collaboration" },
-    { title: "Team Collaboration", description: "Our experts working together on client solutions" },
-    { title: "Client Presentation", description: "Delivering strategic insights to key stakeholders" },
-    { title: "Innovation Lab", description: "Where breakthrough ideas come to life" },
-    { title: "Global Conference", description: "Speaking at international business summits" },
-    { title: "Award Ceremony", description: "Recognition for excellence in business consulting" }
+    { 
+      title: "Modern Office Space", 
+      description: "Our state-of-the-art workspace designed for collaboration and innovation",
+      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400"
+    },
+    { 
+      title: "Team Collaboration", 
+      description: "Our experts working together on breakthrough client solutions",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400"
+    },
+    { 
+      title: "Client Presentation", 
+      description: "Delivering strategic insights to key stakeholders and decision makers",
+      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400"
+    },
+    { 
+      title: "Innovation Lab", 
+      description: "Where breakthrough ideas come to life through cutting-edge technology",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400"
+    },
+    { 
+      title: "Global Conference", 
+      description: "Speaking at international business summits and industry events",
+      image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400"
+    },
+    { 
+      title: "Award Ceremony", 
+      description: "Recognition for excellence in business consulting and innovation",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400"
+    }
   ];
 
   return (
@@ -235,32 +257,14 @@ const AboutUs = () => {
           subtitle="Industry veterans and innovative thinkers united by a passion for driving business success."
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => (
-            <Card 
-              key={member.name} 
-              className="text-center hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <CardHeader className="pb-6">
-                <ImagePlaceholder 
-                  width="w-32" 
-                  height="h-32" 
-                  className="rounded-full mx-auto mb-6"
-                  text="Photo"
-                />
-                <CardTitle className="text-2xl">{member.name}</CardTitle>
-                <CardDescription className="text-lg text-primary">{member.role}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 leading-relaxed">{member.bio}</p>
-              </CardContent>
-            </Card>
+            <TeamMemberCard key={member.name} {...member} index={index} />
           ))}
         </div>
       </Section>
 
-      {/* Gallery */}
+      {/* Gallery Section */}
       <Section background="white">
         <SectionHeader 
           title="Our Journey in Pictures"
@@ -269,13 +273,7 @@ const AboutUs = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {galleryImages.map((image, index) => (
-            <Card key={index} className="hover:shadow-2xl transition-all duration-500 hover:scale-105 border-0 shadow-lg animate-fade-in overflow-hidden" style={{ animationDelay: `${index * 0.1}s` }}>
-              <ImagePlaceholder height="h-64" text="Gallery Image" />
-              <CardContent className="p-6">
-                <h3 className="font-bold text-gray-900 mb-2 text-lg">{image.title}</h3>
-                <p className="text-gray-600">{image.description}</p>
-              </CardContent>
-            </Card>
+            <GalleryCard key={index} {...image} index={index} />
           ))}
         </div>
       </Section>
@@ -289,60 +287,13 @@ const AboutUs = () => {
         
         <Carousel 
           className="w-full"
-          plugins={[
-            Autoplay({
-              delay: 4000,
-            }),
-          ]}
-          opts={{
-            align: "start",
-            loop: true,
-            dragFree: true,
-          }}
+          plugins={[Autoplay({ delay: 4000 })]}
+          opts={{ align: "start", loop: true, dragFree: true }}
         >
           <CarouselContent className="ml-4">
             {testimonials.map((testimonial, index) => (
               <CarouselItem key={index} className="pl-4 md:basis-1/2">
                 <TestimonialCard {...testimonial} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </Section>
-
-      {/* Trusted Brands Carousel */}
-      <Section background="white">
-        <SectionHeader 
-          title="Trusted by Industry Leaders"
-          subtitle="Proud to partner with innovative companies across diverse industries worldwide."
-        />
-        
-        <Carousel 
-          className="w-full"
-          plugins={[
-            Autoplay({
-              delay: 2500,
-            }),
-          ]}
-          opts={{
-            align: "start",
-            loop: true,
-            dragFree: true,
-          }}
-        >
-          <CarouselContent className="ml-4">
-            {trustedBrands.map((brand, index) => (
-              <CarouselItem key={index} className="pl-4 md:basis-1/3 lg:basis-1/4">
-                <Card className="hover:shadow-lg transition-all duration-300 border-0 shadow-md">
-                  <CardContent className="p-8">
-                    <ImagePlaceholder 
-                      height="h-24" 
-                      text="Logo"
-                      className="mb-4"
-                    />
-                    <h3 className="text-center font-semibold text-gray-800">{brand}</h3>
-                  </CardContent>
-                </Card>
               </CarouselItem>
             ))}
           </CarouselContent>

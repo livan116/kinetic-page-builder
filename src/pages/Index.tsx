@@ -13,15 +13,17 @@ import CTASection from "@/components/sections/CTASection";
 const Index = () => {
   return (
     <Layout>
-      <HeroSection />
-      <AboutSection />
-      <MissionSection />
-      <ServicesCarousel />
-      <TestimonialsCarousel />
-      <PricingCarousel />
-      <BlogCarousel />
-      <ContactSection />
-      <CTASection />
+      <div className="space-y-0">
+        <HeroSection />
+        <AboutSection />
+        <MissionSection />
+        <ServicesCarousel />
+        <TestimonialsCarousel />
+        <PricingCarousel />
+        <BlogCarousel />
+        <ContactSection />
+        <CTASection />
+      </div>
     </Layout>
   );
 };
