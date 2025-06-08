@@ -10,10 +10,10 @@ const HeroSection = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         <div className="text-center animate-fade-in">
           <h1 className="text-6xl md:text-8xl font-bold mb-8 animate-scale-in bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">
-            Transform Your <span className="text-yellow-300">Vision</span>
+            Your Perfect <span className="text-yellow-300">Stay</span> Awaits
           </h1>
           <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto opacity-90 leading-relaxed">
-            Unlock your business potential with our cutting-edge solutions, expert guidance, and innovative strategies that drive real results.
+            Experience luxury and comfort in our premium rooms with breathtaking views, world-class amenities, and exceptional service.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
             <Button 
@@ -22,7 +22,7 @@ const HeroSection = () => {
               className="text-lg px-10 py-4 hover:scale-110 transition-all duration-300 shadow-2xl hover:shadow-yellow-300/25 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-semibold"
               asChild
             >
-              <Link to="/products">Start Your Journey</Link>
+              <Link to="/#rooms">Book Your Stay</Link>
             </Button>
             <Button 
               size="lg" 
@@ -30,7 +30,7 @@ const HeroSection = () => {
               className="text-lg px-10 py-4 text-black border-2 border-gray-900 hover:bg-gray-900 hover:text-white hover:border-gray-900 hover:scale-110 transition-all duration-300 backdrop-blur-sm"
               asChild
             >
-              <Link to="/services">Explore Services</Link>
+              <Link to="/about">Explore Amenities</Link>
             </Button>
           </div>
           
@@ -38,27 +38,27 @@ const HeroSection = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             <div className="text-center animate-fade-in">
               <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">
-                <AnimatedCounter target={500} suffix="+" />
+                <AnimatedCounter target={1000} suffix="+" />
               </div>
-              <div className="text-white/80">Happy Clients</div>
+              <div className="text-white/80">Happy Guests</div>
             </div>
             <div className="text-center animate-fade-in" style={{ animationDelay: "0.1s" }}>
               <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">
                 <AnimatedCounter target={98} suffix="%" />
               </div>
-              <div className="text-white/80">Success Rate</div>
+              <div className="text-white/80">Satisfaction Rate</div>
             </div>
             <div className="text-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
               <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">
                 <AnimatedCounter target={24} suffix="/7" />
               </div>
-              <div className="text-white/80">Support</div>
+              <div className="text-white/80">Concierge Service</div>
             </div>
             <div className="text-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
               <div className="text-3xl md:text-4xl font-bold text-yellow-300 mb-2">
-                <AnimatedCounter target={50} suffix="+" />
+                <AnimatedCounter target={5} suffix="★" />
               </div>
-              <div className="text-white/80">Countries</div>
+              <div className="text-white/80">Luxury Rating</div>
             </div>
           </div>
         </div>
